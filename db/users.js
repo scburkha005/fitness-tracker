@@ -27,6 +27,34 @@ const createUser = async ({username, password}) => {
   }
 }
 
+const getUser = async ({username, password}) => {
+    try {
+       const {rows: [user]} = await client.query(`
+        SELECT *
+        FROM users
+        WHERE username = $1;
+        `, [username])
+        const isUser = await bcrypt.compare(password, user.password)
+        if (isUser) {
+            delete user.password;
+            return user;
+
+        }
+        console.log(user);
+        
+
+    }
+    catch (error) {
+        throw error;
+    }
+
+
+
+}
+
+
+
 module.exports = {
-    createUser
+    createUser,
+    getUser
 }
