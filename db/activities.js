@@ -1,10 +1,9 @@
 const client = require('./client');
 
 const createActivity = async ({ name, description }) => {
-  console.log('name:', name)
   const lowerCaseName = name.toLowerCase();
   try {
-    const {rows: [activity] } = await client.query(`
+    const { rows: [activity] } = await client.query(`
       INSERT INTO activities(name, description)
       VALUES ($1, $2)
       RETURNING *; 
@@ -16,6 +15,26 @@ const createActivity = async ({ name, description }) => {
   }
 }
 
+const getAllActivities = async () => {
+  try {
+    const { rows: activities } = await client.query(`
+      SELECT * FROM activities;
+    `);
+
+    if (!activities) {
+      throw {
+        name: "MissingInformation",
+        message: "No activities exist"
+      }
+    }
+
+    return activities;
+  } catch (err) {
+    throw err;
+  }
+}
+
 module.exports = {
-  createActivity
+  createActivity,
+  getAllActivities
 }
