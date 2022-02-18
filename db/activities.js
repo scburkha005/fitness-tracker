@@ -35,7 +35,16 @@ const getAllActivities = async () => {
 }
 
 const getActivityById = async (id) => {
+  try {
+    const { rows: [activity] } = await client.query(`
+      SELECT * FROM activities
+      WHERE id = $1; 
+    `, [id]);
 
+    return activity;
+  } catch (err) {
+    throw err;
+  }
 }
 
 module.exports = {
