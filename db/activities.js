@@ -34,7 +34,12 @@ const getAllActivities = async () => {
   }
 }
 
+const getActivityById = async (id) => {
+
+}
+
 module.exports = {
   createActivity,
-  getAllActivities
+  getAllActivities,
+  getActivityById
 }
