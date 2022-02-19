@@ -52,6 +52,7 @@ const updateActivity = async ({id, ...fields}) => {
   const setString = Object.keys(fields).map(
     (key, index) => `"${key}" = $${index + 1}`
   ).join(', ');
+
   const valuesArray = [...Object.values(fields), id] // O(n) + O(n) => O(n);
   // valuesArray = Object.values(fields) O(n);
   // valuesArray.push(id) O(1) + O(n), constant is ignored therefore => O(n);
@@ -64,11 +65,10 @@ const updateActivity = async ({id, ...fields}) => {
     const { rows: [updatedActivity] } = await client.query(`
       UPDATE activities
       SET ${setString}
-      WHERE id = $${Object.values(fields).length + 1}
+      WHERE id = $${valuesArray.length}
       RETURNING *; 
     `, valuesArray);
 
-    //readd id to fields object
     return updatedActivity;
   } catch (err) {
     throw err;
