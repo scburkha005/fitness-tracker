@@ -47,10 +47,30 @@ const getActivityById = async (id) => {
   }
 }
 
-const updateActivity = async ({ id, name, description }) => {
-  try {
+const updateActivity = async (fields = {}) => {
+  const { id } = fields;
+  //remove id from fields => don't want to update id
+  delete fields.id;
+  const setString = Object.keys(fields).map(
+    (key, index) => `"${key}" = $${index + 1}`
+  ).join(', ');
+  console.log('id', id)
+  const valuesArray = [...Object.values(fields), id]
 
-    return activity;
+  if (setString.length === 0) {
+    return;
+  }
+
+  try {
+    const { rows: [updatedActivity] } = await client.query(`
+      UPDATE activities
+      SET ${setString}
+      WHERE id = $${Object.values(fields).length + 1}
+      RETURNING *; 
+    `, valuesArray);
+    console.log('activity', updatedActivity)
+
+    return updatedActivity;
   } catch (err) {
     throw err;
   }
