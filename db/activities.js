@@ -47,10 +47,8 @@ const getActivityById = async (id) => {
   }
 }
 
-const updateActivity = async (fields = {}) => {
-  const { id } = fields;
-  //remove id from fields => don't want to update id
-  delete fields.id;
+const updateActivity = async ({id, ...fields}) => {
+
   const setString = Object.keys(fields).map(
     (key, index) => `"${key}" = $${index + 1}`
   ).join(', ');
@@ -59,7 +57,6 @@ const updateActivity = async (fields = {}) => {
   // valuesArray.push(id) O(1) + O(n), constant is ignored therefore => O(n);
 
   if (setString.length === 0) {
-    fields.id = id;
     return;
   }
 
@@ -72,7 +69,6 @@ const updateActivity = async (fields = {}) => {
     `, valuesArray);
 
     //readd id to fields object
-    fields.id = id;
     return updatedActivity;
   } catch (err) {
     throw err;
