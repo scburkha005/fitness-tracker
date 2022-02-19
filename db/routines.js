@@ -39,7 +39,16 @@ const getRoutinesWithoutActivities = async () => {
   }
 }
 
+const getAllRoutines = async () => {
+  try {
+
+  } catch (err) {
+    throw err;
+  }
+}
+
 module.exports = {
   createRoutine,
-  getRoutinesWithoutActivities
+  getRoutinesWithoutActivities,
+  getAllRoutines
 }
