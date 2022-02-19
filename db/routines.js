@@ -21,7 +21,22 @@ const createRoutine = async ({ creatorId, isPublic, name, goal }) => {
 }
 
 const getRoutinesWithoutActivities = async () => {
+  try {
+    const { rows: routines } = await client.query(`
+      SELECT * FROM routines; 
+    `);
 
+    if (!routines) {
+      throw {
+        name: "MissingInformation",
+        message: "No activities exist"
+      }
+    }
+
+    return routines;
+  } catch (err) {
+    throw err;
+  }
 }
 
 module.exports = {
