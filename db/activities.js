@@ -54,7 +54,9 @@ const updateActivity = async (fields = {}) => {
   const setString = Object.keys(fields).map(
     (key, index) => `"${key}" = $${index + 1}`
   ).join(', ');
-  const valuesArray = [...Object.values(fields), id]
+  const valuesArray = [...Object.values(fields), id] // O(n) + O(n) => O(n);
+  // valuesArray = Object.values(fields) O(n);
+  // valuesArray.push(id) O(1) + O(n), constant is ignored therefore => O(n);
 
   if (setString.length === 0) {
     fields.id = id;
