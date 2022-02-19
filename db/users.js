@@ -52,9 +52,22 @@ const getUser = async ({username, password}) => {
 
 }
 
+async function getUserById(userId) {
+    try {
+        const { rows: [user] } = await client.query(`
+        SELECT * FROM users
+        WHERE "id" =${ userId };
+        `)
+        return user;
+    }
+        catch (error) {
+            throw error;
+        }
+    }
 
 
 module.exports = {
     createUser,
-    getUser
+    getUser,
+    getUserById
 }
