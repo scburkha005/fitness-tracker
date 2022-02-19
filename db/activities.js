@@ -47,8 +47,39 @@ const getActivityById = async (id) => {
   }
 }
 
+const updateActivity = async (fields = {}) => {
+  const { id } = fields;
+  //remove id from fields => don't want to update id
+  delete fields.id;
+  const setString = Object.keys(fields).map(
+    (key, index) => `"${key}" = $${index + 1}`
+  ).join(', ');
+  const valuesArray = [...Object.values(fields), id]
+
+  if (setString.length === 0) {
+    fields.id = id;
+    return;
+  }
+
+  try {
+    const { rows: [updatedActivity] } = await client.query(`
+      UPDATE activities
+      SET ${setString}
+      WHERE id = $${Object.values(fields).length + 1}
+      RETURNING *; 
+    `, valuesArray);
+
+    //readd id to fields object
+    fields.id = id;
+    return updatedActivity;
+  } catch (err) {
+    throw err;
+  }
+}
+
 module.exports = {
   createActivity,
   getAllActivities,
-  getActivityById
+  getActivityById,
+  updateActivity
 }
