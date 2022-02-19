@@ -20,6 +20,11 @@ const createRoutine = async ({ creatorId, isPublic, name, goal }) => {
   }
 }
 
+const getRoutinesWithoutActivities = async () => {
+
+}
+
 module.exports = {
-  createRoutine
+  createRoutine,
+  getRoutinesWithoutActivities
 }
