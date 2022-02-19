@@ -14,7 +14,7 @@ const createRoutine = async ({ creatorId, isPublic, name, goal }) => {
       RETURNING *;
     `, [creatorId, isPublic, name, goal]);
 
-    return routine;
+    return getRoutineById(routine.id);
   } catch (err) {
     throw err;
   }
@@ -39,6 +39,8 @@ const getRoutinesWithoutActivities = async () => {
   }
 }
 
+//helper function to both grab single routine by id AND to create our ideal routine object
+//routine = {routine, activities, author?}
 const getRoutineById = async (routineId) => {
   try {
     const { rows: [routine] } = await client.query(`
@@ -74,7 +76,6 @@ const getAllRoutines = async () => {
     `);
 
     const routines = await Promise.all(routineIds.map(routine => getRoutineById(routine.id)));
-    console.log('routines', routines)
     return routines;
   } catch (err) {
     throw err;
