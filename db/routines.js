@@ -61,9 +61,18 @@ const getRoutineById = async (routineId) => {
       WHERE "routineId" = $1;
     `, [routineId]);
 
-    routine.activities = activities;
+    const { rows: [author] } = await client.query(`
+      SELECT username FROM users
+      WHERE id = $1; 
+    `, [routine.creatorId]);
 
-    return routine;
+    //store username as creatorName in object
+    const creatorName = author.username;
+    const newRoutine = {...routine, activities, creatorName};
+
+    console.log('routine', newRoutine)
+
+    return newRoutine;
   } catch (err) {
     throw err;
   }
