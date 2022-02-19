@@ -54,10 +54,10 @@ const updateActivity = async (fields = {}) => {
   const setString = Object.keys(fields).map(
     (key, index) => `"${key}" = $${index + 1}`
   ).join(', ');
-  console.log('id', id)
   const valuesArray = [...Object.values(fields), id]
 
   if (setString.length === 0) {
+    fields.id = id;
     return;
   }
 
@@ -68,8 +68,9 @@ const updateActivity = async (fields = {}) => {
       WHERE id = $${Object.values(fields).length + 1}
       RETURNING *; 
     `, valuesArray);
-    console.log('activity', updatedActivity)
 
+    //readd id to fields object
+    fields.id = id;
     return updatedActivity;
   } catch (err) {
     throw err;
