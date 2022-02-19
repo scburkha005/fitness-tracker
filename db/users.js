@@ -37,10 +37,11 @@ const getUser = async ({username, password}) => {
         const isUser = await bcrypt.compare(password, user.password)
         if (isUser) {
             delete user.password;
+            console.log(user); 
             return user;
 
         }
-        console.log(user);
+        
         
 
     }
@@ -58,11 +59,13 @@ async function getUserById(userId) {
         SELECT * FROM users
         WHERE "id" =${ userId };
         `)
+        delete user.password;
         return user;
+        
     }
         catch (error) {
             throw error;
-        }
+        } 
     }
 
 
