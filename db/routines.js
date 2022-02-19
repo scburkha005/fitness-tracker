@@ -92,6 +92,20 @@ const getAllRoutines = async () => {
   }
 }
 
+const getAllRoutinesByUser = async ({ id }) => {
+  try {
+    const { rows : routineIds } = await client.query(`
+      SELECT id FROM routines
+      WHERE "creatorId" = $1;
+    `, [id]);
+
+    const userRoutines = await Promise.all(routineIds.map(routine => getRoutineById(routine.id)));
+    return userRoutines;
+  } catch (err) {
+    throw err;
+  }
+}
+
 const getAllPublicRoutines = async () => {
   try {
     const { rows: routineIds } = await client.query(`
@@ -111,5 +125,6 @@ module.exports = {
   getRoutinesWithoutActivities,
   getAllRoutines,
   getRoutineById,
+  getAllRoutinesByUser,
   getAllPublicRoutines
 }
