@@ -94,7 +94,13 @@ const getAllRoutines = async () => {
 
 const getAllPublicRoutines = async () => {
   try {
-    
+    const { rows: routineIds } = await client.query(`
+      SELECT id FROM routines
+      WHERE "isPublic" = true;
+    `);
+
+    const publicRoutines = await Promise.all(routineIds.map(routine => getRoutineById(routine.id)));
+    return publicRoutines;
   } catch (err) {
     throw err;
   }
