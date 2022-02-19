@@ -39,9 +39,22 @@ const getRoutinesWithoutActivities = async () => {
   }
 }
 
-const getAllRoutines = async () => {
+const getRoutineById = async () => {
   try {
 
+  } catch (err) {
+    throw err;
+  }
+}
+
+const getAllRoutines = async () => {
+  try {
+    const routines = await getRoutinesWithoutActivities();
+
+    const { rows: activities } = await client.query(`
+      SELECT activities.* FROM activities
+      JOIN routine_activities ON
+    `)
   } catch (err) {
     throw err;
   }
