@@ -92,9 +92,18 @@ const getAllRoutines = async () => {
   }
 }
 
+const getAllPublicRoutines = async () => {
+  try {
+    
+  } catch (err) {
+    throw err;
+  }
+}
+
 module.exports = {
   createRoutine,
   getRoutinesWithoutActivities,
   getAllRoutines,
-  getRoutineById
+  getRoutineById,
+  getAllPublicRoutines
 }
