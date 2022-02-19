@@ -83,5 +83,6 @@ const getAllRoutines = async () => {
 module.exports = {
   createRoutine,
   getRoutinesWithoutActivities,
-  getAllRoutines
+  getAllRoutines,
+  getRoutineById
 }
