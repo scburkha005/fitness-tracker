@@ -47,8 +47,18 @@ const getActivityById = async (id) => {
   }
 }
 
+const updateActivity = async ({ id, name, description }) => {
+  try {
+
+    return activity;
+  } catch (err) {
+    throw err;
+  }
+}
+
 module.exports = {
   createActivity,
   getAllActivities,
-  getActivityById
+  getActivityById,
+  updateActivity
 }
