@@ -56,7 +56,7 @@ const getRoutineById = async (routineId) => {
     const { rows: activities } = await client.query(`
       SELECT activities.* FROM activities
       JOIN routine_activities ON activities.id = routine_activities."activityId"
-      WHERE "routineId" = $1
+      WHERE "routineId" = $1;
     `, [routineId]);
 
     routine.activities = activities;
@@ -74,6 +74,7 @@ const getAllRoutines = async () => {
     `);
 
     const routines = await Promise.all(routineIds.map(routine => getRoutineById(routine.id)));
+    console.log('routines', routines)
     return routines;
   } catch (err) {
     throw err;
