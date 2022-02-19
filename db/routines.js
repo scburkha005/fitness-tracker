@@ -55,12 +55,15 @@ const getRoutineById = async (routineId) => {
       }
     }
 
+    //grab activities including duration and count
     const { rows: activities } = await client.query(`
-      SELECT activities.* FROM activities
+      SELECT activities.*, routine_activities.duration, routine_activities.count
+      FROM activities
       JOIN routine_activities ON activities.id = routine_activities."activityId"
       WHERE "routineId" = $1;
     `, [routineId]);
 
+    //grab username
     const { rows: [author] } = await client.query(`
       SELECT username FROM users
       WHERE id = $1; 
@@ -69,8 +72,6 @@ const getRoutineById = async (routineId) => {
     //store username as creatorName in object
     const creatorName = author.username;
     const newRoutine = {...routine, activities, creatorName};
-
-    console.log('routine', newRoutine)
 
     return newRoutine;
   } catch (err) {
