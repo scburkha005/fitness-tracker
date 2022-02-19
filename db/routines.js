@@ -14,7 +14,7 @@ const createRoutine = async ({ creatorId, isPublic, name, goal }) => {
       RETURNING *;
     `, [creatorId, isPublic, name, goal]);
 
-    return routine;
+    return getRoutineById(routine.id);
   } catch (err) {
     throw err;
   }
@@ -39,6 +39,8 @@ const getRoutinesWithoutActivities = async () => {
   }
 }
 
+//helper function to both grab single routine by id AND to create our ideal routine object
+//routine = {routine, activities, author?}
 const getRoutineById = async (routineId) => {
   try {
     const { rows: [routine] } = await client.query(`
@@ -53,15 +55,25 @@ const getRoutineById = async (routineId) => {
       }
     }
 
+    //grab activities including duration and count
     const { rows: activities } = await client.query(`
-      SELECT activities.* FROM activities
+      SELECT activities.*, routine_activities.duration, routine_activities.count
+      FROM activities
       JOIN routine_activities ON activities.id = routine_activities."activityId"
-      WHERE "routineId" = $1
+      WHERE "routineId" = $1;
     `, [routineId]);
 
-    routine.activities = activities;
+    //grab username
+    const { rows: [author] } = await client.query(`
+      SELECT username FROM users
+      WHERE id = $1; 
+    `, [routine.creatorId]);
 
-    return routine;
+    //store username as creatorName in object
+    const creatorName = author.username;
+    const newRoutine = {...routine, activities, creatorName};
+
+    return newRoutine;
   } catch (err) {
     throw err;
   }
@@ -83,5 +95,6 @@ const getAllRoutines = async () => {
 module.exports = {
   createRoutine,
   getRoutinesWithoutActivities,
-  getAllRoutines
+  getAllRoutines,
+  getRoutineById
 }
