@@ -39,7 +39,49 @@ const getRoutinesWithoutActivities = async () => {
   }
 }
 
+const getRoutineById = async (routineId) => {
+  try {
+    const { rows: [routine] } = await client.query(`
+      SELECT * FROM routines
+      WHERE id = $1;
+    `, [routineId]);
+
+    if (!routine) {
+      throw {
+        name: "RoutineNotFoundError",
+        message: "Could not find a routine with that routineId"
+      }
+    }
+
+    const { rows: activities } = await client.query(`
+      SELECT activities.* FROM activities
+      JOIN routine_activities ON activities.id = routine_activities."activityId"
+      WHERE "routineId" = $1
+    `, [routineId]);
+
+    routine.activities = activities;
+
+    return routine;
+  } catch (err) {
+    throw err;
+  }
+}
+
+const getAllRoutines = async () => {
+  try {
+    const { rows: routineIds } = await client.query(`
+      SELECT id FROM routines; 
+    `);
+
+    const routines = await Promise.all(routineIds.map(routine => getRoutineById(routine.id)));
+    return routines;
+  } catch (err) {
+    throw err;
+  }
+}
+
 module.exports = {
   createRoutine,
-  getRoutinesWithoutActivities
+  getRoutinesWithoutActivities,
+  getAllRoutines
 }
