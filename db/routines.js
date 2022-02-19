@@ -69,7 +69,12 @@ const getRoutineById = async (routineId) => {
 
 const getAllRoutines = async () => {
   try {
+    const { rows: routineIds } = await client.query(`
+      SELECT id FROM routines; 
+    `);
 
+    const routines = await Promise.all(routineIds.map(routine => getRoutineById(routine.id)));
+    return routines;
   } catch (err) {
     throw err;
   }
