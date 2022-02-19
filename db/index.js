@@ -1,7 +1,7 @@
 // require and re-export all files in this db directory (users, activities...)
 const { createActivity, getAllActivities, getActivityById, updateActivity } = require('./activities');
 const { createUser, getUser } = require('./users');
-const { createRoutine } = require('./routines')
+const { createRoutine, getRoutinesWithoutActivities } = require('./routines')
 
 module.exports = {
   createActivity,
@@ -10,5 +10,6 @@ module.exports = {
   getUser,
   getActivityById,
   updateActivity,
-  createRoutine
+  createRoutine,
+  getRoutinesWithoutActivities
 }
