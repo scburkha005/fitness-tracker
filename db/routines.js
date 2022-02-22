@@ -127,6 +127,13 @@ const getPublicRoutinesByUser = async ({ id }) => {
       WHERE "isPublic" = true AND "creatorId" = $1; 
     `, [id]);
 
+    if (!routineIds) {
+      throw {
+        name: "InvalidUser",
+        message: "User does not exist"
+      }
+    }
+
     const publicUserRoutines = await Promise.all(routineIds.map(routine => getRoutineById(routine.id)));
     return publicUserRoutines;
   } catch (err) {
