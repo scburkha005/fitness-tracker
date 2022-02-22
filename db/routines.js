@@ -141,6 +141,22 @@ const getPublicRoutinesByUser = async ({ id }) => {
   }
 }
 
+// returns all public routines filtered by a specific activity
+const getPublicRoutinesByActivity = async ({ id }) => {
+  try {
+    const { rows: routineIds } = await client.query(`
+      SELECT routines.id FROM routines
+      JOIN routine_activities ON routines.id = routine_activities."routineId"
+      WHERE "isPublic" = true AND routine_activities."activityId" = $1;
+    `, [id]);
+
+    const publicRoutinesByActivity = await Promise.all(routineIds.map(routine => getRoutineById(routine.id)));
+    return publicRoutinesByActivity;
+  } catch (err) {
+    throw err;
+  }
+}
+
 module.exports = {
   createRoutine,
   getRoutinesWithoutActivities,
@@ -148,5 +164,6 @@ module.exports = {
   getRoutineById,
   getAllRoutinesByUser,
   getAllPublicRoutines,
-  getPublicRoutinesByUser
+  getPublicRoutinesByUser,
+  getPublicRoutinesByActivity
 }
