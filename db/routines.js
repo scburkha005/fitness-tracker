@@ -162,7 +162,6 @@ const updateRoutine = async ({ id, ...fields }) => {
   const setString = Object.keys(fields).map(
     (key, index) => `"${key}" = $${index + 1}`
   ).join(', ');
-  console.log('setstring', setString)
 
   if (setString.length === 0) {
     return;
@@ -183,6 +182,14 @@ const updateRoutine = async ({ id, ...fields }) => {
   }
 }
 
+const destroyRoutine = async (id) => {
+  try {
+
+  } catch (err) {
+    throw err;
+  }
+}
+
 module.exports = {
   createRoutine,
   getRoutinesWithoutActivities,
@@ -192,5 +199,6 @@ module.exports = {
   getAllPublicRoutines,
   getPublicRoutinesByUser,
   getPublicRoutinesByActivity,
-  updateRoutine
+  updateRoutine,
+  destroyRoutine
 }
