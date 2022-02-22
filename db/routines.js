@@ -184,7 +184,12 @@ const updateRoutine = async ({ id, ...fields }) => {
 
 const destroyRoutine = async (id) => {
   try {
+    await client.query(`
+      DELETE FROM routines
+      WHERE id = $1;
+    `, [id]);
 
+    //waiting for getRoutineActivitiesByRoutine helper function for test
   } catch (err) {
     throw err;
   }
