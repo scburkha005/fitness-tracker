@@ -158,6 +158,16 @@ const getPublicRoutinesByActivity = async ({ id }) => {
 }
 
 const updateRoutine = async ({ id, ...fields }) => {
+  // fields = { isPublic, name, goal }
+  const setString = Object.keys(fields).map(
+    (key, index) => `"${key} = $${index + 1}`
+  ).join(', ');
+
+  if (setString.length === 0) {
+    return;
+  }
+
+  const valuesArray = [...Object.values(fields), id];
   try {
     const { rows: [updatedRoutine] } = await client.query(`
     
