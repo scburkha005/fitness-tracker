@@ -120,9 +120,15 @@ const getAllPublicRoutines = async () => {
   }
 }
 
-const getPublicRoutinesByUser = async ({ username }) => {
+const getPublicRoutinesByUser = async ({ id }) => {
   try {
+    const { rows: routineIds } = await client.query(`
+      SELECT id FROM routines
+      WHERE "isPublic" = true AND "creatorId" = $1; 
+    `, [id]);
 
+    const publicUserRoutines = await Promise.all(routineIds.map(routine => getRoutineById(routine.id)));
+    return publicUserRoutines;
   } catch (err) {
     throw err;
   }
