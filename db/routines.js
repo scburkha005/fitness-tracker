@@ -157,9 +157,12 @@ const getPublicRoutinesByActivity = async ({ id }) => {
   }
 }
 
-const updateRoutine = async ({ id, isPublic, name, goal }) => {
+const updateRoutine = async ({ id, ...fields }) => {
   try {
-
+    const { rows: [updatedRoutine] } = await client.query(`
+    
+    `)
+    return updatedRoutine;
   } catch (err) {
     throw err;
   }
