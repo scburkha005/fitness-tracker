@@ -120,11 +120,33 @@ const getAllPublicRoutines = async () => {
   }
 }
 
+const getPublicRoutinesByUser = async ({ id }) => {
+  try {
+    const { rows: routineIds } = await client.query(`
+      SELECT id FROM routines
+      WHERE "isPublic" = true AND "creatorId" = $1; 
+    `, [id]);
+
+    if (!routineIds) {
+      throw {
+        name: "InvalidUser",
+        message: "User does not exist"
+      }
+    }
+
+    const publicUserRoutines = await Promise.all(routineIds.map(routine => getRoutineById(routine.id)));
+    return publicUserRoutines;
+  } catch (err) {
+    throw err;
+  }
+}
+
 module.exports = {
   createRoutine,
   getRoutinesWithoutActivities,
   getAllRoutines,
   getRoutineById,
   getAllRoutinesByUser,
-  getAllPublicRoutines
+  getAllPublicRoutines,
+  getPublicRoutinesByUser
 }
