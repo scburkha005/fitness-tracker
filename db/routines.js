@@ -141,6 +141,7 @@ const getPublicRoutinesByUser = async ({ id }) => {
   }
 }
 
+// returns all public routines filtered by a specific activity
 const getPublicRoutinesByActivity = async ({ id }) => {
   try {
     const { rows: routineIds } = await client.query(`
