@@ -12,8 +12,58 @@ const addActivityToRoutine = async ({ routineId, activityId, count, duration }) 
   } catch (err) {
     throw err;
   }
+  
 }
 
+async function getRoutineActivityById(Id) {
+  try {
+    const { rows: [ activity ]  } = await client.query(`
+      SELECT *
+      FROM posts
+      WHERE id=$1;
+    `, [Id]);
+
+    const { rows: tags } = await client.query(`
+      SELECT tags.*
+      FROM tags
+      JOIN post_tags ON tags.id=post_tags."tagId"
+      WHERE post_tags."postId"=$1;
+    `, [Id])
+
+    const { rows: [author] } = await client.query(`
+      SELECT id, username, name, location
+      FROM users
+      WHERE id=$1;
+    `, [post.authorId])
+
+    post.tags = tags;
+    post.author = author;
+
+    delete post.authorId;
+
+    return activity;
+  } catch (error) {
+    throw error;
+  }
+}
+
+const getRoutineActivitiesByRoutine = async ({ id })=> {
+  try {
+    const { rows } = await client.query(`
+      SELECT * 
+      FROM routine_activities
+      WHERE "routineId"=$1;
+    `, [id])
+    return rows;
+  }
+    catch (error) {
+      throw error;
+    }
+}
+
+
 module.exports = {
-  addActivityToRoutine
+  addActivityToRoutine,
+  getRoutineActivityById,
+  getRoutineActivitiesByRoutine
 }
