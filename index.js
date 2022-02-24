@@ -16,6 +16,24 @@ app.listen(3000, () => {
 app.use(morgan('dev'));
 app.use(express.json());
 
+//Error handling: 404 errors
+app.use((req, res, next) => {
+  res.status(404).send({
+    message: "Page Not Found"
+  });
+});
+
+//Error handling: 500 errors unless specific 4XX code is given
+app.use(({ name, message }, req, res, next) => {
+  if (res.statusCode < 400 || res.statusCode >= 500) {
+    res.status(500);
+  }
+  res.send({
+    name,
+    message
+  });
+});
+
 app.get('/', (req, res, next) => {
   res.send("Welcome to the homepage");
 })
