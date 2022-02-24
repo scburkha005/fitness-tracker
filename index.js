@@ -18,6 +18,14 @@ app.use(morgan('dev'));
 app.use(cors());
 app.use(express.json());
 
+// url/api
+app.use('/api', require('./api'));
+
+// GET url/
+app.get('/', (req, res, next) => {
+  res.send("Welcome to the homepage");
+});
+
 //Error handling: 404 errors
 app.use((req, res, next) => {
   res.status(404).send({
@@ -35,7 +43,3 @@ app.use(({ name, message }, req, res, next) => {
     message
   });
 });
-
-app.get('/', (req, res, next) => {
-  res.send("Welcome to the homepage");
-})
