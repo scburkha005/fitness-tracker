@@ -13,6 +13,9 @@ app.listen(3000, () => {
   console.log(`The server is listening on http://localhost:${PORT}`);
 });
 
+app.use(morgan('dev'));
+app.use(express.json());
+
 app.get('/', (req, res, next) => {
   res.send("Welcome to the homepage");
 })
