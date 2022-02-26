@@ -34,4 +34,14 @@ router.post('/', requireUser, async (req, res, next) => {
   }
 });
 
+// PATCH api/routines/:routineId
+router.patch('/:routineId', async (req, res, next) => {
+  const { routineId } = req.params;
+  try {
+
+  } catch ({ name, message }) {
+    next({ name, message });
+  }
+});
+
 module.exports = router;
