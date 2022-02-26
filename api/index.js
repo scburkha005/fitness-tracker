@@ -5,6 +5,7 @@
  const router = express.Router();
 
 //Create /api calls and router.use('/otherapifile', require('./otherapifile)) here
+router.use('/activities', require('./activities'));
 
 //Check server health /api/health
 router.get('/health', (req, res, next) => {
