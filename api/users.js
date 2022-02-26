@@ -1,5 +1,5 @@
 const express = require('express');
-const { createUser, getUserByUsername, getUser } = require('../db');
+const { createUser, getUserByUsername, getUser, getPublicRoutinesByUser } = require('../db');
 const jwt = require('jsonwebtoken');
 const { requireUser } = require('./utils');
 const { JWT_SECRET } = process.env;
@@ -106,6 +106,16 @@ router.get('/me', requireUser, async (req, res, next) => {
 
 })
 
+// GET users/:username/routines
 
+router.get('/:username/routines', async (req, res, next) => {
+    const {username} = req.params
+    const user = await getUserByUsername(username)
+    const routines = await getPublicRoutinesByUser(user)
+    res.send(
+        routines
+    )
+
+})
 
 module.exports = router;
