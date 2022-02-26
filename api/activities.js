@@ -1,5 +1,5 @@
 const express = require('express');
-const { getAllActivities, createActivity, updateActivity } = require('../db');
+const { getAllActivities, createActivity, updateActivity, getPublicRoutinesByActivity } = require('../db');
 const router = express.Router();
 
 router.use((req, res, next) => {
@@ -47,6 +47,19 @@ router.patch('/:activityId', async (req, res, next) => {
     const updatedActivity = await updateActivity(activityBody);
 
     res.send(updatedActivity)
+  } catch (err) {
+    throw err;
+  }
+});
+
+// GET /api/activities/:activityId/routines
+router.get('/:activityId/routines', async (req, res, next) => {
+  const { activityId: id } = req.params;
+
+  try {
+    const relatedRoutines = await getPublicRoutinesByActivity({ id });
+
+    res.send(relatedRoutines)
   } catch (err) {
     throw err;
   }
