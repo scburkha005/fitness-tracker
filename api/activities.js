@@ -1,5 +1,5 @@
 const express = require('express');
-const { getAllActivities, createActivity } = require('../db');
+const { getAllActivities, createActivity, updateActivity } = require('../db');
 const router = express.Router();
 
 router.use((req, res, next) => {
@@ -33,6 +33,20 @@ router.post('/', async (req, res, next) => {
     activity.name = activityName;
 
     res.send(activity);
+  } catch (err) {
+    throw err;
+  }
+});
+
+// PATCH /api/activities/:activityId
+router.patch('/:activityId', async (req, res, next) => {
+  const { activityId: id } = req.params;
+  const activityBody = { id, ...req.body };
+
+  try {
+    const updatedActivity = await updateActivity(activityBody);
+
+    res.send(updatedActivity)
   } catch (err) {
     throw err;
   }
