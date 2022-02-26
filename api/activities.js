@@ -52,4 +52,13 @@ router.patch('/:activityId', async (req, res, next) => {
   }
 });
 
+// GET /api/activities/:activityId/routines
+router.get('/:activityId/routines', async (req, res, next) => {
+  try {
+    
+  } catch (err) {
+    throw err;
+  }
+});
+
 module.exports = router;
