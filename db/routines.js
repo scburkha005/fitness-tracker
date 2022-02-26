@@ -15,8 +15,8 @@ const createRoutine = async ({ creatorId, isPublic, name, goal }) => {
     `, [creatorId, isPublic, name, goal]);
 
     return getRoutineById(routine.id);
-  } catch (err) {
-    throw err;
+  } catch ({ name, message }) {
+    next({ name, message});
   }
 }
 
@@ -34,8 +34,8 @@ const getRoutinesWithoutActivities = async () => {
     }
 
     return routines;
-  } catch (err) {
-    throw err;
+  } catch ({ name, message }) {
+    next({ name, message });
   }
 }
 
@@ -74,8 +74,8 @@ const getRoutineById = async (routineId) => {
     const newRoutine = {...routine, activities, creatorName};
 
     return newRoutine;
-  } catch (err) {
-    throw err;
+  } catch ({ name, message }) {
+    next({ name, message });
   }
 }
 
@@ -87,8 +87,8 @@ const getAllRoutines = async () => {
 
     const routines = await Promise.all(routineIds.map(routine => getRoutineById(routine.id)));
     return routines;
-  } catch (err) {
-    throw err;
+  } catch ({ name, message }) {
+    next({ name, message });
   }
 }
 
@@ -101,8 +101,8 @@ const getAllRoutinesByUser = async ({ id }) => {
 
     const userRoutines = await Promise.all(routineIds.map(routine => getRoutineById(routine.id)));
     return userRoutines;
-  } catch (err) {
-    throw err;
+  } catch ({ name, message }) {
+    next({ name, message });
   }
 }
 
@@ -115,8 +115,8 @@ const getAllPublicRoutines = async () => {
 
     const publicRoutines = await Promise.all(routineIds.map(routine => getRoutineById(routine.id)));
     return publicRoutines;
-  } catch (err) {
-    throw err;
+  } catch ({ name, message }) {
+    next({ name, message})
   }
 }
 
@@ -136,8 +136,8 @@ const getPublicRoutinesByUser = async ({ id }) => {
 
     const publicUserRoutines = await Promise.all(routineIds.map(routine => getRoutineById(routine.id)));
     return publicUserRoutines;
-  } catch (err) {
-    throw err;
+  } catch ({ name, message }) {
+    next({ name, message });
   }
 }
 
@@ -152,8 +152,8 @@ const getPublicRoutinesByActivity = async ({ id }) => {
 
     const publicRoutinesByActivity = await Promise.all(routineIds.map(routine => getRoutineById(routine.id)));
     return publicRoutinesByActivity;
-  } catch (err) {
-    throw err;
+  } catch ({ name, message }) {
+    next({ name, message });
   }
 }
 
@@ -177,8 +177,8 @@ const updateRoutine = async ({ id, ...fields }) => {
     `, valuesArray)
 
     return updatedRoutine;
-  } catch (err) {
-    throw err;
+  } catch ({ name, message }) {
+    next({ name, message });
   }
 }
 
@@ -195,8 +195,8 @@ const destroyRoutine = async (id) => {
     `, [id]);
 
     //waiting for getRoutineActivitiesByRoutine helper function for test
-  } catch (err) {
-    throw err;
+  } catch ({ name, message }) {
+    next({ name, message });
   }
 }
 
