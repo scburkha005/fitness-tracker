@@ -1,6 +1,7 @@
 const express = require('express');
 const { createUser, getUserByUsername, getUser } = require('../db');
 const jwt = require('jsonwebtoken');
+const { requireUser } = require('./utils');
 const { JWT_SECRET } = process.env;
 const router = express.Router();
 
@@ -94,6 +95,16 @@ catch (error){
 
 })
 
+// GET users/me 
+
+router.get('/me', requireUser, async (req, res, next) => {
+    res.send({
+        ...req.user
+    })
+
+
+
+})
 
 
 
