@@ -1,5 +1,5 @@
 const express = require('express');
-const { getAllPublicRoutines, createRoutine } = require('../db');
+const { getAllPublicRoutines, createRoutine, updateRoutine } = require('../db');
 const { requireUser } = require('./utils');
 const router = express.Router();
 
@@ -36,9 +36,13 @@ router.post('/', requireUser, async (req, res, next) => {
 
 // PATCH api/routines/:routineId
 router.patch('/:routineId', async (req, res, next) => {
-  const { routineId } = req.params;
-  try {
+  const { routineId: id } = req.params;
+  const routineValuesToUpdate = { id, ...req.body };
 
+  try {
+    const updatedRoutine = await updateRoutine(routineValuesToUpdate);
+
+    res.send(updatedRoutine);
   } catch ({ name, message }) {
     next({ name, message });
   }
