@@ -1,6 +1,7 @@
 const express = require('express');
-const { createUser, getUserByUsername } = require('../db');
-
+const { createUser, getUserByUsername, getUser } = require('../db');
+const jwt = require('jsonwebtoken');
+const { JWT_SECRET } = process.env;
 const router = express.Router();
 
 router.use((req, res, next) => {
@@ -35,7 +36,18 @@ if (password.length <= 8) {
 
 
 const user = await createUser({username, password})
-res.send({user})
+const token = jwt.sign({
+    id: user.id, 
+    username
+},JWT_SECRET,{
+    expiresIn: '1w'
+})
+
+res.send({
+    message: 'Thank you for signing up',
+    token,
+    user
+})
 
 
 }
@@ -45,7 +57,42 @@ throw (error)
 }
 
 
-}),
+})
+
+//POST users/login
+router.post('/login', async (req, res, next) => {
+const { username, password } = req.body
+try {
+const user = await getUser({username, password})
+console.log('hello')
+console.log(user)
+console.log(password)
+if (user)
+{
+    const token = jwt.sign(user, JWT_SECRET) 
+    res.send({
+        token, 
+        message: 'Thanks for logging in.'
+    })
+
+}
+else {
+    next({
+        name: 'Incorrect credentials',
+        message: 'Username or password is incorrect'
+    })
+}
+
+
+
+}    
+catch (error){
+    throw (error)
+}
+
+
+
+})
 
 
 
