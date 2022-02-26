@@ -1,5 +1,6 @@
 const express = require('express');
 const { getAllPublicRoutines, createRoutine } = require('../db');
+const { requireUser } = require('./utils');
 const router = express.Router();
 
 router.use((req, res, next) => {
@@ -14,19 +15,22 @@ router.get('/', async (req, res, next) => {
     const allPublicRoutines = await getAllPublicRoutines();
 
     res.send(allPublicRoutines);
-  } catch (err) {
-    throw err;
+  } catch ({ name, message }) {
+    next({ name, message })
   }
 });
 
 // POST api/routines
-router.post('/', async (req, res, next) => {
+router.post('/', requireUser, async (req, res, next) => {
+  const { id: creatorId } = req.user;
+  const routineObj = { creatorId, ...req.body };
+
   try {
-    const newRoutine = await createRoutine();
+    const newRoutine = await createRoutine(routineObj);
 
     res.send(newRoutine)
-  } catch (err) {
-    throw err;
+  } catch ({ name, message }) {
+    next({ name, message });
   }
 });
 
