@@ -1,5 +1,5 @@
 const express = require('express');
-const { getAllActivities } = require('../db');
+const { getAllActivities, createActivity } = require('../db');
 const router = express.Router();
 
 router.use((req, res, next) => {
@@ -14,6 +14,25 @@ router.get('/', async (req, res, next) => {
     const allActivities = await getAllActivities();
 
     res.send(allActivities)
+  } catch (err) {
+    throw err;
+  }
+});
+
+// POST /api/activities
+router.post('/', async (req, res, next) => {
+  try {
+    const activity = await createActivity(req.body);
+
+    //Capitalize first letter of every word
+    const activityNameArray = activity.name.split(" ");
+    for (let i = 0; i < activityNameArray.length; i++) {
+      activityNameArray[i] = activityNameArray[i].charAt(0).toUpperCase() + activityNameArray[i].slice(1);
+    }
+    const activityName = activityNameArray.join(' ');
+    activity.name = activityName;
+
+    res.send(activity);
   } catch (err) {
     throw err;
   }
