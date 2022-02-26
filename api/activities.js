@@ -1,5 +1,6 @@
 const express = require('express');
 const { getAllActivities, createActivity, updateActivity, getPublicRoutinesByActivity } = require('../db');
+const { requireUser } = require('./utils')
 const router = express.Router();
 
 router.use((req, res, next) => {
@@ -20,7 +21,7 @@ router.get('/', async (req, res, next) => {
 });
 
 // POST /api/activities
-router.post('/', async (req, res, next) => {
+router.post('/', requireUser, async (req, res, next) => {
   try {
     const activity = await createActivity(req.body);
 
@@ -39,7 +40,7 @@ router.post('/', async (req, res, next) => {
 });
 
 // PATCH /api/activities/:activityId
-router.patch('/:activityId', async (req, res, next) => {
+router.patch('/:activityId', requireUser, async (req, res, next) => {
   const { activityId: id } = req.params;
   const activityBody = { id, ...req.body };
 
