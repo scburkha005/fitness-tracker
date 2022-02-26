@@ -8,5 +8,15 @@ router.use((req, res, next) => {
   next();
 });
 
+// GET /api/activities
+router.get('/', async (req, res, next) => {
+  try {
+    const allActivities = await getAllActivities();
+
+    res.send(allActivities)
+  } catch (err) {
+    throw err;
+  }
+});
 
 module.exports = router;
