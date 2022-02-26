@@ -61,9 +61,51 @@ const getRoutineActivitiesByRoutine = async ({ id })=> {
     }
 }
 
+const updateRoutineActivity = async ({ id, ...fields }) => {
+  const setString = Object.keys(fields).map(
+    (key, index) => `"${key}" = $${index + 1}`
+  ).join(', ');
+
+  if (setString.length === 0) {
+    return;
+  }
+  const valuesArray = [...Object.values(fields), id];
+  try {
+    const { rows: [updatedRoutineActivity] } = await client.query(`
+    UPDATE routine_activities
+    SET ${setString}
+    WHERE id = $${valuesArray.length}
+    RETURNING *;
+    
+    `, valuesArray)
+    return updatedRoutineActivity;
+
+
+
+  }
+  catch (error) {
+    throw error;
+  }
+}
+
+const destroyRoutineActivity = async (id) => {
+  try {
+    const { rows: [destroyedRoutineActivity] } = await client.query(`
+      DELETE FROM routine_activities
+      WHERE id = $1
+      RETURNING *;
+    `, [id]);
+    return destroyedRoutineActivity;
+    //waiting for getRoutineActivitiesByRoutine helper function for test
+  } catch (err) {
+    throw err;
+  }
+}
 
 module.exports = {
   addActivityToRoutine,
   getRoutineActivityById,
-  getRoutineActivitiesByRoutine
+  getRoutineActivitiesByRoutine,
+  updateRoutineActivity,
+  destroyRoutineActivity
 }
