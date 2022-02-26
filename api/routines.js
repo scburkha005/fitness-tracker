@@ -19,4 +19,13 @@ router.get('/', async (req, res, next) => {
   }
 });
 
+// POST api/routines
+router.post('/', async (req, res, next) => {
+  try {
+
+  } catch (err) {
+    throw err;
+  }
+});
+
 module.exports = router;
