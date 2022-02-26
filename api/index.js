@@ -9,7 +9,8 @@
 router.use('/activities', require('./activities'));
 // api/routines
 router.use('/routines', require('./routines'));
-
+// api/users
+router.use('/users', require('./users'));
 //Check server health /api/health
 router.get('/health', (req, res, next) => {
   res.send({
