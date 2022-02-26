@@ -6,4 +6,11 @@
 
 //Create /api calls and router.use('/otherapifile', require('./otherapifile)) here
 
+//Check server health /api/health
+router.get('/health', (req, res, next) => {
+  res.send({
+    message: "Server is healthy"
+  });
+});
+
  module.exports = router;
