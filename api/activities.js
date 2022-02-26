@@ -1,5 +1,5 @@
 const express = require('express');
-const { getAllActivities } = require('../db');
+const { getAllActivities, createActivity } = require('../db');
 const router = express.Router();
 
 router.use((req, res, next) => {
@@ -14,6 +14,18 @@ router.get('/', async (req, res, next) => {
     const allActivities = await getAllActivities();
 
     res.send(allActivities)
+  } catch (err) {
+    throw err;
+  }
+});
+
+// POST /api/activities
+router.post('/', async (req, res, next) => {
+  console.log('req.body', req.body)
+  try {
+    const activity = await createActivity(req.body);
+
+    res.send(activity);
   } catch (err) {
     throw err;
   }
