@@ -49,10 +49,7 @@ const getRoutineById = async (routineId) => {
     `, [routineId]);
 
     if (!routine) {
-      throw {
-        name: "RoutineNotFoundError",
-        message: "Could not find a routine with that routineId"
-      }
+      return routine;
     }
 
     //grab activities including duration and count
