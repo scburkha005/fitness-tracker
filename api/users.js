@@ -18,7 +18,6 @@ try {
     const checkUser = await getUserByUsername (
         username
     ) 
-    console.log ('checkUser',checkUser)
     if (checkUser) {
         next({
             name: 'User already exists',
@@ -65,9 +64,6 @@ router.post('/login', async (req, res, next) => {
 const { username, password } = req.body
 try {
 const user = await getUser({username, password})
-console.log('hello')
-console.log(user)
-console.log(password)
 if (user)
 {
     const token = jwt.sign(user, JWT_SECRET) 
