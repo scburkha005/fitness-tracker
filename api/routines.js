@@ -1,5 +1,5 @@
 const express = require('express');
-const { getAllPublicRoutines, createRoutine, updateRoutine, destroyRoutine, getRoutineById } = require('../db');
+const { getAllPublicRoutines, createRoutine, updateRoutine, destroyRoutine, getRoutineById, addActivityToRoutine, getRoutineActivitiesByRoutine, getPublicRoutinesByActivity } = require('../db');
 const { requireUser } = require('./utils');
 const router = express.Router();
 
@@ -83,6 +83,20 @@ router.delete('/:routineId', requireUser, async (req, res, next) => {
     }
 
     res.send(deletedRoutine);
+  } catch ({ name, message }) {
+    next({ name, message });
+  }
+})
+
+//POST /routines/:routineId/activities
+router.post('/:routineId/activities', async (req, res, next) => {
+  const { routineId } = req.params;
+  const activityRoutine = { ...req.body, routineId}
+  
+  try {
+    const routineActivityPair = await addActivityToRoutine(activityRoutine);
+
+    res.send(routineActivityPair)
   } catch ({ name, message }) {
     next({ name, message });
   }
