@@ -1,5 +1,5 @@
 const express = require('express');
-const { getAllPublicRoutines, createRoutine, updateRoutine } = require('../db');
+const { getAllPublicRoutines, createRoutine, updateRoutine, destroyRoutine } = require('../db');
 const { requireUser } = require('./utils');
 const router = express.Router();
 
@@ -47,5 +47,25 @@ router.patch('/:routineId', async (req, res, next) => {
     next({ name, message });
   }
 });
+
+// DELETE api/routines/:routineId
+router.delete('/:routineId', async (req, res, next) => {
+  const { routineId } = req.params;
+
+  try {
+    const deletedRoutine = await destroyRoutine(routineId);
+
+    if (!deletedRoutine) {
+      next({
+        name: "RoutineNotFoundError",
+        message: "Could not find a routine with that routineId"
+      })
+    }
+
+    res.send(deletedRoutine);
+  } catch ({ name, message }) {
+    next({ name, message });
+  }
+})
 
 module.exports = router;
