@@ -15,8 +15,8 @@ router.get('/', async (req, res, next) => {
     const allActivities = await getAllActivities();
 
     res.send(allActivities)
-  } catch (err) {
-    throw err;
+  } catch ({ name, message }) {
+    next({ name, message });
   }
 });
 
@@ -34,8 +34,8 @@ router.post('/', requireUser, async (req, res, next) => {
     activity.name = activityName;
 
     res.send(activity);
-  } catch (err) {
-    throw err;
+  } catch ({ name, message }) {
+    next({ name, message });
   }
 });
 
@@ -48,8 +48,8 @@ router.patch('/:activityId', requireUser, async (req, res, next) => {
     const updatedActivity = await updateActivity(activityBody);
 
     res.send(updatedActivity)
-  } catch (err) {
-    throw err;
+  } catch ({ name, message }) {
+    next({ name, message });
   }
 });
 
@@ -61,8 +61,8 @@ router.get('/:activityId/routines', async (req, res, next) => {
     const relatedRoutines = await getPublicRoutinesByActivity({ id });
 
     res.send(relatedRoutines)
-  } catch (err) {
-    throw err;
+  } catch ({ name, message }) {
+    next({ name, message });
   }
 });
 

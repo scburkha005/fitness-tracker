@@ -49,10 +49,7 @@ const getRoutineById = async (routineId) => {
     `, [routineId]);
 
     if (!routine) {
-      throw {
-        name: "RoutineNotFoundError",
-        message: "Could not find a routine with that routineId"
-      }
+      return routine;
     }
 
     //grab activities including duration and count
@@ -184,9 +181,10 @@ const updateRoutine = async ({ id, ...fields }) => {
 
 const destroyRoutine = async (id) => {
   try {
-    await client.query(`
+    const { rows: [ deletedRoutine ]} = await client.query(`
       DELETE FROM routines
-      WHERE id = $1;
+      WHERE id = $1
+      RETURNING *;
     `, [id]);
     
     await client.query(`
@@ -194,7 +192,7 @@ const destroyRoutine = async (id) => {
       WHERE "routineId" = $1;
     `, [id]);
 
-    //waiting for getRoutineActivitiesByRoutine helper function for test
+    return deletedRoutine;
   } catch (err) {
     throw err;
   }
