@@ -35,7 +35,7 @@ router.post('/', requireUser, async (req, res, next) => {
 });
 
 // PATCH api/routines/:routineId
-router.patch('/:routineId', async (req, res, next) => {
+router.patch('/:routineId', requireUser, async (req, res, next) => {
   const { routineId: id } = req.params;
   const routineValuesToUpdate = { id, ...req.body };
 
@@ -49,7 +49,7 @@ router.patch('/:routineId', async (req, res, next) => {
 });
 
 // DELETE api/routines/:routineId
-router.delete('/:routineId', async (req, res, next) => {
+router.delete('/:routineId', requireUser, async (req, res, next) => {
   const { routineId } = req.params;
 
   try {
