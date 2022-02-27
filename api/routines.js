@@ -88,4 +88,13 @@ router.delete('/:routineId', requireUser, async (req, res, next) => {
   }
 })
 
+//POST /routines/:routineId/activities
+router.post('/:routineId/activities', async (req, res, next) => {
+  try {
+
+  } catch ({ name, message }) {
+    next({ name, message });
+  }
+})
+
 module.exports = router;
