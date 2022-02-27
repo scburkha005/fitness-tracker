@@ -53,6 +53,8 @@ router.use('/activities', require('./activities'));
 router.use('/routines', require('./routines'));
 // api/users
 router.use('/users', require('./users'));
+// api/routine_activities
+router.use('/routine_activities', require('./routine_activities'));
 //Check server health /api/health
 router.get('/health', (req, res, next) => {
   res.send({
