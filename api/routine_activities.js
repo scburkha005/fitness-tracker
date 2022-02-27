@@ -42,6 +42,14 @@ router.patch('/:routineActivityId', requireUser, async (req, res, next) => {
     
 })
 
+// DELETE /routine_activities/:routineActivityId
+router.delete('/routine_activities/:routineActivityId', async (req, res, next) => {
+  try {
+
+  } catch ({ name, message }) {
+    next({ name, message });
+  }
+})
 
 
 
