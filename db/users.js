@@ -18,7 +18,6 @@ const createUser = async ({username, password}) => {
         VALUES ($1, $2)
         RETURNING *;
     `, [username, hashpwd])
-    console.log(user)
    delete user.password;
     return user;
   }
@@ -36,7 +35,6 @@ const getUser = async ({username, password}) => {
         `, [username])
         const isUser = await bcrypt.compare(password, user.password)
         if (isUser) {
-            console.log(user); 
             return user;
 
         }
