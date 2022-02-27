@@ -15,33 +15,15 @@ const addActivityToRoutine = async ({ routineId, activityId, count, duration }) 
   
 }
 
-async function getRoutineActivityById(Id) {
+async function getRoutineActivityById(id) {
   try {
-    const { rows: [ activity ]  } = await client.query(`
-      SELECT *
-      FROM posts
-      WHERE id=$1;
-    `, [Id]);
+    const { rows: [ra]} = await client.query(`
+    SELECT *
+    FROM routine_activities
+    WHERE id=$1;
+    `, [id]);
 
-    const { rows: tags } = await client.query(`
-      SELECT tags.*
-      FROM tags
-      JOIN post_tags ON tags.id=post_tags."tagId"
-      WHERE post_tags."postId"=$1;
-    `, [Id])
-
-    const { rows: [author] } = await client.query(`
-      SELECT id, username, name, location
-      FROM users
-      WHERE id=$1;
-    `, [post.authorId])
-
-    post.tags = tags;
-    post.author = author;
-
-    delete post.authorId;
-
-    return activity;
+    return ra;
   } catch (error) {
     throw error;
   }
