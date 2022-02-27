@@ -35,6 +35,7 @@ const getUser = async ({username, password}) => {
         `, [username])
         const isUser = await bcrypt.compare(password, user.password)
         if (isUser) {
+            delete user.password;
             return user;
 
         }
