@@ -9,7 +9,7 @@ const client = require('./db/client');
 
 const { PORT = 3000 } = process.env;
 
-app.listen(3000, () => {
+app.listen(PORT, () => {
   client.connect();
   console.log(`The server is listening on http://localhost:${PORT}`);
 });
