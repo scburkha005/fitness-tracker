@@ -21,7 +21,7 @@ try {
     if (checkUser) {
         next({
             name: 'User already exists',
-            response: 'A user by that username already exists'
+            message: 'A user by that username already exists'
         })
         
         return 
