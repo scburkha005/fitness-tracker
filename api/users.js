@@ -26,7 +26,7 @@ try {
         
         return 
     }
-if (password.length <= 8) {
+if (password && password.length <= 8) {
     next({
         name: 'password required',
         message: 'Please make the password at least 8 characters long.'
@@ -112,7 +112,7 @@ router.get('/:username/routines', async (req, res, next) => {
             routines
         )
     } catch ({ name, message }) {
-        next({ name, message })
+        next({ name, message });
     }
 
 })
