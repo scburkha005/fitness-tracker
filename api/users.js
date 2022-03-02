@@ -51,9 +51,8 @@ res.send({
 
 
 }
-catch (error) {
-throw (error)
-
+catch ({ name, message }) {
+    next({ name, message })
 }
 
 
@@ -83,8 +82,8 @@ else {
 
 
 }    
-catch (error){
-    throw (error)
+catch ({ name, message }){
+    next({ name, message })
 }
 
 
