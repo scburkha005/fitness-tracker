@@ -21,12 +21,12 @@ try {
     if (checkUser) {
         next({
             name: 'User already exists',
-            response: 'A user by that username already exists'
+            message: 'A user by that username already exists'
         })
         
         return 
     }
-if (password.length <= 8) {
+if (password && password.length <= 8) {
     next({
         name: 'password required',
         message: 'Please make the password at least 8 characters long.'
@@ -51,9 +51,8 @@ res.send({
 
 
 }
-catch (error) {
-throw (error)
-
+catch ({ name, message }) {
+    next({ name, message })
 }
 
 
@@ -83,8 +82,8 @@ else {
 
 
 }    
-catch (error){
-    throw (error)
+catch ({ name, message }){
+    next({ name, message })
 }
 
 
@@ -105,12 +104,16 @@ router.get('/me', requireUser, async (req, res, next) => {
 // GET users/:username/routines
 
 router.get('/:username/routines', async (req, res, next) => {
-    const {username} = req.params
-    const user = await getUserByUsername(username)
-    const routines = await getPublicRoutinesByUser(user)
-    res.send(
-        routines
-    )
+    try {
+        const {username} = req.params
+        const user = await getUserByUsername(username)
+        const routines = await getPublicRoutinesByUser(user)
+        res.send(
+            routines
+        )
+    } catch ({ name, message }) {
+        next({ name, message });
+    }
 
 })
 
