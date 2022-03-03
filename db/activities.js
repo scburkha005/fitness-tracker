@@ -3,6 +3,13 @@ const client = require('./client');
 const createActivity = async ({ name, description }) => {
   const lowerCaseName = name.toLowerCase();
   try {
+    if (!name || !description) {
+      throw {
+        name: "MissingRequiredFields",
+        message: "Please provide both a name and description"
+      }
+    }
+
     const { rows: [activity] } = await client.query(`
       INSERT INTO activities(name, description)
       VALUES ($1, $2)
