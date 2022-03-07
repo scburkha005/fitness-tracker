@@ -94,6 +94,13 @@ router.post('/:routineId/activities', async (req, res, next) => {
   const activityRoutine = { ...req.body, routineId}
   
   try {
+    if (req.body.count === 0 || req.body.duration === 0) {
+      next({
+        name: "InvalidInformation",
+        message: "Count and duration cannot be 0"
+      })
+      return;
+    }
     const routineActivityPair = await addActivityToRoutine(activityRoutine);
 
     res.send(routineActivityPair)
