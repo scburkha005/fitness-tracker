@@ -8,6 +8,13 @@ router.patch('/:routineActivityId', requireUser, async (req, res, next) => {
     const {routineActivityId} = req.params
     const {count, duration} = req.body
     try {
+        if (count === 0 || duration === 0) {
+          next({
+            name: "InvalidInformation",
+            message: "Count and duration cannot be 0"
+          })
+          return;
+        }
         const ra = await getRoutineActivityById(
             routineActivityId
         ) 
